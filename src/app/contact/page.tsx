@@ -6,7 +6,7 @@ export default function Contact() {
           <div className="text-center mb-5">
             <h1 className="display-4 mb-3">Contact Us</h1>
             <p className="lead">
-              We'd love to hear from you. Send us a message!
+              We&apos;d love to hear from you. Send us a message!
             </p>
           </div>
 
