@@ -58,6 +58,14 @@ export default function Navbar() {
                 Contact
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${isActive("/signup")}`}
+                href="/signup"
+              >
+                Sign Up
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
