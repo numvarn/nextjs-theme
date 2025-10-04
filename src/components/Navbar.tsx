@@ -81,6 +81,17 @@ export default function Navbar() {
                 Contact
               </Link>
             </li>
+            {session?.user?.role === 'admin' && (
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${isActive("/dashboard")}`}
+                  href="/dashboard"
+                >
+                  <i className="bi bi-speedometer2 me-1"></i>
+                  Dashboard
+                </Link>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav ms-auto" suppressHydrationWarning>
             {status === "loading" ? (
