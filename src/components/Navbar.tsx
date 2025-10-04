@@ -2,12 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   const isActive = (path: string) => {
     return pathname === path ? "active" : "";
+  };
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
   };
 
   return (
@@ -58,14 +64,48 @@ export default function Navbar() {
                 Contact
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${isActive("/signup")}`}
-                href="/signup"
-              >
-                Sign Up
-              </Link>
-            </li>
+          </ul>
+          <ul className="navbar-nav ms-auto" suppressHydrationWarning>
+            {status === "loading" ? (
+              <li className="nav-item">
+                <span className="nav-link">Loading...</span>
+              </li>
+            ) : session ? (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link text-light">
+                    Welcome, {session.user?.name}
+                  </span>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-light btn-sm"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${isActive("/login")}`}
+                    href="/login"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${isActive("/signup")}`}
+                    href="/signup"
+                  >
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
