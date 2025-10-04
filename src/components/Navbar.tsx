@@ -16,6 +16,23 @@ export default function Navbar() {
     await signOut({ callbackUrl: '/' });
   };
 
+  const getRoleBadgeClass = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return 'badge bg-danger';
+      case 'staff':
+        return 'badge bg-warning text-dark';
+      case 'user':
+        return 'badge bg-secondary';
+      default:
+        return 'badge bg-secondary';
+    }
+  };
+
+  const getRoleLabel = (role: string) => {
+    return role.toUpperCase();
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark" suppressHydrationWarning>
       <div className="container">
@@ -73,8 +90,13 @@ export default function Navbar() {
             ) : session ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link text-light">
+                  <span className="nav-link text-light d-flex align-items-center gap-2">
                     Welcome, {session.user?.name}
+                    {session.user?.role && (
+                      <span className={getRoleBadgeClass(session.user.role)}>
+                        {getRoleLabel(session.user.role)}
+                      </span>
+                    )}
                   </span>
                 </li>
                 <li className="nav-item">

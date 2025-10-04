@@ -1,10 +1,13 @@
 import mongoose, { Schema, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+export type UserRole = 'admin' | 'staff' | 'user';
+
 export interface IUser {
   email: string;
   password: string;
   name: string;
+  role: UserRole;
   createdAt: Date;
 }
 
@@ -32,6 +35,12 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     type: String,
     required: [true, 'Name is required'],
     trim: true,
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'staff', 'user'],
+    default: 'user',
+    required: true,
   },
   createdAt: {
     type: Date,
