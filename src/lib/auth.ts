@@ -2,6 +2,13 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { UserRole } from '@/models/User';
 
+interface SessionUser {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: UserRole;
+}
+
 export async function getSession() {
   return await getServerSession(authOptions);
 }
@@ -26,7 +33,7 @@ export async function requireRole(allowedRoles: UserRole[]) {
     throw new Error('Unauthorized');
   }
 
-  const userRole = (session.user as any)?.role as UserRole;
+  const userRole = (session.user as SessionUser)?.role;
 
   if (!userRole || !allowedRoles.includes(userRole)) {
     throw new Error('Forbidden: Insufficient permissions');
@@ -38,11 +45,11 @@ export async function requireRole(allowedRoles: UserRole[]) {
 // Helper functions to check roles
 export async function isAdmin() {
   const session = await getSession();
-  return (session?.user as any)?.role === 'admin';
+  return (session?.user as SessionUser)?.role === 'admin';
 }
 
 export async function isStaff() {
   const session = await getSession();
-  const role = (session?.user as any)?.role;
+  const role = (session?.user as SessionUser)?.role;
   return role === 'admin' || role === 'staff';
 }

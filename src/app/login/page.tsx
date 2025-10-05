@@ -34,7 +34,7 @@ export default function LoginPage() {
       // Redirect to home page on success
       router.push('/');
       router.refresh();
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
       setLoading(false);
     }
