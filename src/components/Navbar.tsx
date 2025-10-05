@@ -16,6 +16,17 @@ export default function Navbar() {
     await signOut({ callbackUrl: '/' });
   };
 
+  const closeOffcanvas = () => {
+    const offcanvasElement = document.getElementById('offcanvasNavbar');
+    if (offcanvasElement && typeof window !== 'undefined') {
+      const bootstrap = (window as typeof window & { bootstrap?: { Offcanvas?: { getInstance: (element: HTMLElement) => { hide: () => void } | null } } }).bootstrap;
+      const bsOffcanvas = bootstrap?.Offcanvas?.getInstance(offcanvasElement);
+      if (bsOffcanvas) {
+        bsOffcanvas.hide();
+      }
+    }
+  };
+
   const getRoleBadgeClass = (role: string) => {
     switch (role) {
       case 'admin':
@@ -42,17 +53,24 @@ export default function Navbar() {
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="offcanvas offcanvas-end bg-dark" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
           <ul className="navbar-nav me-auto" suppressHydrationWarning>
             <li className="nav-item">
               <Link
                 className={`nav-link ${isActive("/")}`}
                 href="/"
+                onClick={closeOffcanvas}
               >
                 Home
               </Link>
@@ -61,6 +79,7 @@ export default function Navbar() {
               <Link
                 className={`nav-link ${isActive("/create/product")}`}
                 href="/create/product"
+                onClick={closeOffcanvas}
               >
                 Product
               </Link>
@@ -69,6 +88,7 @@ export default function Navbar() {
               <Link
                 className={`nav-link ${isActive("/about")}`}
                 href="/about"
+                onClick={closeOffcanvas}
               >
                 About
               </Link>
@@ -77,6 +97,7 @@ export default function Navbar() {
               <Link
                 className={`nav-link ${isActive("/contact")}`}
                 href="/contact"
+                onClick={closeOffcanvas}
               >
                 Contact
               </Link>
@@ -86,6 +107,7 @@ export default function Navbar() {
                 <Link
                   className={`nav-link ${isActive("/dashboard")}`}
                   href="/dashboard"
+                  onClick={closeOffcanvas}
                 >
                   <i className="bi bi-speedometer2 me-1"></i>
                   Dashboard
@@ -125,6 +147,7 @@ export default function Navbar() {
                   <Link
                     className={`nav-link ${isActive("/login")}`}
                     href="/login"
+                    onClick={closeOffcanvas}
                   >
                     Login
                   </Link>
@@ -133,6 +156,7 @@ export default function Navbar() {
                   <Link
                     className={`nav-link ${isActive("/signup")}`}
                     href="/signup"
+                    onClick={closeOffcanvas}
                   >
                     Sign Up
                   </Link>
@@ -140,6 +164,7 @@ export default function Navbar() {
               </>
             )}
           </ul>
+          </div>
         </div>
       </div>
     </nav>
