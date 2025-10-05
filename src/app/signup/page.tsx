@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -52,7 +53,13 @@ export default function SignupPage() {
       }
 
       // Redirect to login or home page
-      alert('Sign up successful!');
+      await Swal.fire({
+        icon: 'success',
+        title: 'สำเร็จ!',
+        text: 'ลงทะเบียนสำเร็จ กำลังนำไปยังหน้าหลัก...',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       router.push('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign up');

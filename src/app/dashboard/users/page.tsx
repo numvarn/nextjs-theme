@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 interface User {
   _id: string;
@@ -106,7 +107,13 @@ export default function UsersManagementPage() {
       if (response.ok) {
         setShowModal(false);
         fetchUsers();
-        alert(modalMode === 'add' ? 'เพิ่มผู้ใช้สำเร็จ' : 'อัพเดทข้อมูลสำเร็จ');
+        await Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ!',
+          text: modalMode === 'add' ? 'เพิ่มผู้ใช้สำเร็จ' : 'อัพเดทข้อมูลสำเร็จ',
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
         setError(data.error || 'เกิดข้อผิดพลาด');
       }
@@ -117,7 +124,18 @@ export default function UsersManagementPage() {
 
   // Delete user
   const handleDeleteUser = async (userId: string, userName: string) => {
-    if (!confirm(`คุณต้องการลบผู้ใช้ "${userName}" ใช่หรือไม่?`)) {
+    const result = await Swal.fire({
+      title: 'ยืนยันการลบ',
+      text: `คุณต้องการลบผู้ใช้ "${userName}" ใช่หรือไม่?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'ใช่, ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    });
+
+    if (!result.isConfirmed) {
       return;
     }
 
@@ -130,7 +148,13 @@ export default function UsersManagementPage() {
 
       if (response.ok) {
         fetchUsers();
-        alert('ลบผู้ใช้สำเร็จ');
+        await Swal.fire({
+          icon: 'success',
+          title: 'ลบสำเร็จ!',
+          text: 'ลบผู้ใช้สำเร็จ',
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
         setError(data.error || 'ไม่สามารถลบผู้ใช้ได้');
       }
