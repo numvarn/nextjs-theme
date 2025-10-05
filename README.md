@@ -87,6 +87,46 @@ npm run build
 npm run start
 ```
 
+## 🚀 Deploy บน Vercel
+
+### ขั้นตอนการ Deploy
+
+1. **Push โค้ดขึ้น GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for production"
+   git push origin main
+   ```
+
+2. **เชื่อมต่อกับ Vercel**
+   - ไปที่ [vercel.com](https://vercel.com)
+   - Login ด้วย GitHub account
+   - คลิก "Add New Project"
+   - เลือก repository ของคุณ
+   - คลิก "Import"
+
+3. **ตั้งค่า Environment Variables**
+
+   ใน Vercel Dashboard ให้เพิ่ม Environment Variables ต่อไปนี้:
+
+   - `MONGODB_URI` - MongoDB connection string
+   - `NEXTAUTH_URL` - URL ของแอปพลิเคชัน (https://your-app.vercel.app)
+   - `NEXTAUTH_SECRET` - Secret key สำหรับ NextAuth
+
+   สร้าง NEXTAUTH_SECRET ด้วยคำสั่ง:
+   ```bash
+   openssl rand -base64 32
+   ```
+
+4. **Deploy**
+   - คลิก "Deploy"
+   - รอให้ Vercel build และ deploy เสร็จ
+   - เข้าถึงเว็บไซต์ผ่าน URL ที่ Vercel สร้างให้
+
+### Auto Deploy
+
+Vercel จะทำการ deploy อัตโนมัติทุกครั้งที่คุณ push โค้ดขึ้น GitHub branch `main`
+
 ## 📝 การพัฒนาเพิ่มเติม
 
 ### เพิ่มหน้าใหม่
