@@ -87,7 +87,7 @@ export default async function DashboardPage() {
                 <div className="col-12">
                   <h4 className="mb-3">Quick Actions</h4>
                   <div className="list-group">
-                    <a href="#" className="list-group-item list-group-item-action">
+                    <a href="/dashboard/users" className="list-group-item list-group-item-action">
                       <div className="d-flex w-100 justify-content-between align-items-center">
                         <div>
                           <i className="bi bi-person-fill me-2 text-primary"></i>
