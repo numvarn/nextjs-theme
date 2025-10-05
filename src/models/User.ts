@@ -8,6 +8,8 @@ export interface IUser {
   password: string;
   name: string;
   role: UserRole;
+  provider?: string;
+  providerId?: string;
   createdAt: Date;
 }
 
@@ -42,6 +44,14 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     enum: ['admin', 'staff', 'user'],
     default: 'user',
     required: true,
+  },
+  provider: {
+    type: String,
+    required: false,
+  },
+  providerId: {
+    type: String,
+    required: false,
   },
   createdAt: {
     type: Date,
