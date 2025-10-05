@@ -90,7 +90,7 @@ export default async function DashboardPage() {
                     <a href="#" className="list-group-item list-group-item-action">
                       <div className="d-flex w-100 justify-content-between align-items-center">
                         <div>
-                          <i className="bi bi-person-plus-fill me-2 text-primary"></i>
+                          <i className="bi bi-person-fill me-2 text-primary"></i>
                           <strong>จัดการผู้ใช้งาน</strong>
                         </div>
                         <i className="bi bi-chevron-right"></i>
