@@ -97,7 +97,7 @@ export default async function DashboardPage() {
                       </div>
                       <p className="mb-1 text-muted small">เพิ่ม แก้ไข หรือลบผู้ใช้งานในระบบ</p>
                     </a>
-                    <a href="#" className="list-group-item list-group-item-action">
+                    <a href="/dashboard/products" className="list-group-item list-group-item-action">
                       <div className="d-flex w-100 justify-content-between align-items-center">
                         <div>
                           <i className="bi bi-box-seam me-2 text-success"></i>
