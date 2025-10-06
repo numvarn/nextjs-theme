@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
-import { signIn, getSession } from 'next-auth/react';
+import { useState, FormEvent, useEffect, Suspense } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
@@ -190,9 +191,9 @@ export default function LoginPage() {
               <div className="text-center mt-3">
                 <p className="mb-0">
                   Don&apos;t have an account?{' '}
-                  <a href="/signup" className="text-decoration-none">
+                  <Link href="/signup" className="text-decoration-none">
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -200,5 +201,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="container mt-5"><div className="d-flex justify-content-center"><div className="spinner-border" role="status"><span className="visually-hidden">Loading...</span></div></div></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

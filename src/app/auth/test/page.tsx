@@ -1,1 +1,134 @@
-'use client';\n\nimport { useSession } from 'next-auth/react';\nimport { useEffect, useState } from 'react';\n\nexport default function AuthTestPage() {\n  const { data: session, status } = useSession();\n  const [clientInfo, setClientInfo] = useState<any>(null);\n\n  useEffect(() => {\n    // Check environment variables on client side\n    setClientInfo({\n      hasGoogleClientId: !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,\n      environment: process.env.NODE_ENV,\n    });\n  }, []);\n\n  if (status === 'loading') {\n    return (\n      <div className=\"container mt-5\">\n        <div className=\"d-flex justify-content-center\">\n          <div className=\"spinner-border\" role=\"status\">\n            <span className=\"visually-hidden\">กำลังโหลด...</span>\n          </div>\n        </div>\n      </div>\n    );\n  }\n\n  return (\n    <div className=\"container mt-5\">\n      <div className=\"row justify-content-center\">\n        <div className=\"col-md-8\">\n          <div className=\"card\">\n            <div className=\"card-header\">\n              <h3>การทดสอบระบบยืนยันตัวตน (Authentication Test)</h3>\n            </div>\n            <div className=\"card-body\">\n              <h5>สถานะเซสชัน (Session Status)</h5>\n              <p><strong>สถานะ:</strong> {status}</p>\n              \n              {session ? (\n                <div className=\"mt-4\">\n                  <h5>ข้อมูลผู้ใช้ (User Information)</h5>\n                  <div className=\"table-responsive\">\n                    <table className=\"table table-bordered\">\n                      <tbody>\n                        <tr>\n                          <td><strong>ชื่อ (Name):</strong></td>\n                          <td>{session.user?.name || 'ไม่ระบุ'}</td>\n                        </tr>\n                        <tr>\n                          <td><strong>อีเมล (Email):</strong></td>\n                          <td>{session.user?.email || 'ไม่ระบุ'}</td>\n                        </tr>\n                        <tr>\n                          <td><strong>รูปโปรไฟล์ (Image):</strong></td>\n                          <td>\n                            {session.user?.image ? (\n                              <img src={session.user.image} alt=\"Profile\" style={{ width: '50px', height: '50px', borderRadius: '50%' }} />\n                            ) : (\n                              'ไม่มีรูปโปรไฟล์'\n                            )}\n                          </td>\n                        </tr>\n                        <tr>\n                          <td><strong>บทบาท (Role):</strong></td>\n                          <td>{(session.user as any)?.role || 'ไม่ระบุ'}</td>\n                        </tr>\n                        <tr>\n                          <td><strong>User ID:</strong></td>\n                          <td>{(session.user as any)?.id || 'ไม่ระบุ'}</td>\n                        </tr>\n                      </tbody>\n                    </table>\n                  </div>\n                </div>\n              ) : (\n                <div className=\"alert alert-warning\">\n                  <strong>ไม่ได้เข้าสู่ระบบ</strong><br />\n                  กรุณาเข้าสู่ระบบเพื่อดูข้อมูล\n                </div>\n              )}\n\n              <div className=\"mt-4\">\n                <h5>ข้อมูลการกำหนดค่า (Configuration Info)</h5>\n                <div className=\"table-responsive\">\n                  <table className=\"table table-bordered\">\n                    <tbody>\n                      <tr>\n                        <td><strong>Environment:</strong></td>\n                        <td>{clientInfo?.environment || 'ไม่ทราบ'}</td>\n                      </tr>\n                      <tr>\n                        <td><strong>Google Client ID Configured:</strong></td>\n                        <td>{clientInfo?.hasGoogleClientId ? '✅ กำหนดค่าแล้ว' : '❌ ยังไม่ได้กำหนดค่า'}</td>\n                      </tr>\n                    </tbody>\n                  </table>\n                </div>\n              </div>\n\n              <div className=\"mt-4\">\n                <h5>Raw Session Data (สำหรับ Debug)</h5>\n                <pre className=\"bg-light p-3 rounded\">\n                  {JSON.stringify(session, null, 2)}\n                </pre>\n              </div>\n\n              <div className=\"mt-4\">\n                <a href=\"/login\" className=\"btn btn-primary me-2\">ไปหน้า Login</a>\n                <a href=\"/\" className=\"btn btn-secondary\">กลับหน้าแรก</a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}\n
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+
+interface ClientInfo {
+  hasGoogleClientId: boolean;
+  environment: string;
+}
+
+export default function AuthTestPage() {
+  const { data: session, status } = useSession();
+  const [clientInfo, setClientInfo] = useState<ClientInfo | null>(null);
+
+  useEffect(() => {
+    // Check environment variables on client side
+    setClientInfo({
+      hasGoogleClientId: !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      environment: process.env.NODE_ENV,
+    });
+  }, []);
+
+  if (status === 'loading') {
+    return (
+      <div className="container mt-5">
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">กำลังโหลด...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card">
+            <div className="card-header">
+              <h3>การทดสอบระบบยืนยันตัวตน (Authentication Test)</h3>
+            </div>
+            <div className="card-body">
+              <h5>สถานะเซสชัน (Session Status)</h5>
+              <p><strong>สถานะ:</strong> {status}</p>
+              
+              {session ? (
+                <div className="mt-4">
+                  <h5>ข้อมูลผู้ใช้ (User Information)</h5>
+                  <div className="table-responsive">
+                    <table className="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <td><strong>ชื่อ (Name):</strong></td>
+                          <td>{session.user?.name || 'ไม่ระบุ'}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>อีเมล (Email):</strong></td>
+                          <td>{session.user?.email || 'ไม่ระบุ'}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>รูปโปรไฟล์ (Image):</strong></td>
+                          <td>
+                            {session.user?.image ? (
+                              <Image 
+                                src={session.user.image} 
+                                alt="Profile" 
+                                width={50} 
+                                height={50} 
+                                style={{ borderRadius: '50%' }} 
+                                className="rounded-circle"
+                              />
+                            ) : (
+                              'ไม่มีรูปโปรไฟล์'
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>บทบาท (Role):</strong></td>
+                          <td>{session.user && 'role' in session.user ? (session.user as { role: string }).role : 'ไม่ระบุ'}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>User ID:</strong></td>
+                          <td>{session.user && 'id' in session.user ? (session.user as { id: string }).id : 'ไม่ระบุ'}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <div className="alert alert-warning">
+                  <strong>ไม่ได้เข้าสู่ระบบ</strong><br />
+                  กรุณาเข้าสู่ระบบเพื่อดูข้อมูล
+                </div>
+              )}
+
+              <div className="mt-4">
+                <h5>ข้อมูลการกำหนดค่า (Configuration Info)</h5>
+                <div className="table-responsive">
+                  <table className="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Environment:</strong></td>
+                        <td>{clientInfo?.environment || 'ไม่ทราบ'}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Google Client ID Configured:</strong></td>
+                        <td>{clientInfo?.hasGoogleClientId ? '✅ กำหนดค่าแล้ว' : '❌ ยังไม่ได้กำหนดค่า'}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h5>Raw Session Data (สำหรับ Debug)</h5>
+                <pre className="bg-light p-3 rounded">
+                  {JSON.stringify(session, null, 2)}
+                </pre>
+              </div>
+
+              <div className="mt-4">
+                <Link href="/login" className="btn btn-primary me-2">ไปหน้า Login</Link>
+                <Link href="/" className="btn btn-secondary">กลับหน้าแรก</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
