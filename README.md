@@ -1,6 +1,6 @@
-# 🚀 Next.js Full-Stack Application with Authentication & Admin Dashboard
+# 🚀 Next.js Full-Stack E-Commerce Application with Admin Dashboard
 
-โปรเจค Web Application แบบ Full-Stack ที่พัฒนาด้วย Next.js 15, MongoDB, NextAuth และ Bootstrap 5 พร้อมระบบ Authentication, Authorization และ Admin Dashboard สำหรับจัดการผู้ใช้งาน
+โปรเจค Web Application แบบ Full-Stack ที่พัฒนาด้วย Next.js 15, MongoDB, NextAuth และ Bootstrap 5 พร้อมระบบ Authentication, Authorization, Product Management และ Google Cloud Storage Integration
 
 ---
 
@@ -16,6 +16,7 @@
 - [ระบบ Authentication](#ระบบ-authentication)
 - [ระบบ Authorization](#ระบบ-authorization)
 - [Database Models](#database-models)
+- [Google Cloud Storage](#google-cloud-storage)
 - [การพัฒนาเพิ่มเติม](#การพัฒนาเพิ่มเติม)
 - [Deploy บน Vercel](#deploy-บน-vercel)
 - [คำแนะนำการใช้งาน](#คำแนะนำการใช้งาน)
@@ -28,19 +29,20 @@
 
 ## 🎯 ภาพรวมโปรเจค
 
-โปรเจคนี้เป็น Full-Stack Web Application ที่มีระบบจัดการผู้ใช้งานครบวงจร ประกอบด้วย:
+โปรเจคนี้เป็น Full-Stack E-Commerce Web Application ที่มีระบบจัดการสินค้าและผู้ใช้งานครบวงจร ประกอบด้วย:
 
 - **Frontend**: Next.js 15 + React 19 + Bootstrap 5 + TypeScript
 - **Backend**: Next.js API Routes + MongoDB + Mongoose
-- **Authentication**: NextAuth.js v4 with JWT Strategy
+- **Authentication**: NextAuth.js v4 with JWT Strategy + Google OAuth
+- **File Storage**: Google Cloud Storage for product images
 - **UI Components**: Bootstrap 5.3.8 + Bootstrap Icons + SweetAlert2
 - **Middleware**: Route Protection & Role-Based Access Control
 
 โปรเจคนี้เหมาะสำหรับการพัฒนาต่อยอดเป็น:
+- ระบบร้านค้าออนไลน์ (E-commerce Platform)
 - ระบบจัดการเนื้อหา (CMS)
-- ระบบจัดการร้านค้าออนไลน์ (E-commerce)
 - ระบบจัดการองค์กร (Enterprise Application)
-- แพลตฟอร์มเรียนรู้ออนไลน์ (LMS)
+- แพลตฟอร์มแสดงสินค้า (Product Showcase)
 
 ---
 
@@ -59,6 +61,7 @@
 - **[Mongoose 8.19.0](https://mongoosejs.com/)** - MongoDB ODM
 - **[NextAuth.js 4.24.11](https://next-auth.js.org/)** - Authentication Solution
 - **[bcryptjs 3.0.2](https://www.npmjs.com/package/bcryptjs)** - Password Hashing
+- **[@google-cloud/storage](https://www.npmjs.com/package/@google-cloud/storage)** - Google Cloud Storage SDK
 
 ### Development Tools
 - **[ESLint 9](https://eslint.org/)** - Code Linting
@@ -72,12 +75,15 @@
 ### 🔐 ระบบ Authentication & Authorization
 - ✅ ลงทะเบียนผู้ใช้ใหม่ (Sign Up) พร้อม Email Validation
 - ✅ เข้าสู่ระบบ (Login) ด้วย Email & Password
+- ✅ **เข้าสู่ระบบด้วย Google Account (OAuth)**
+- ✅ **ลงทะเบียนด้วย Google Account (OAuth)**
 - ✅ ออกจากระบบ (Logout) ด้วย NextAuth
 - ✅ Session Management ด้วย JWT Strategy
 - ✅ Password Hashing ด้วย bcryptjs (10 salt rounds)
 - ✅ Role-Based Access Control (Admin, Staff, User)
 - ✅ Protected Routes ด้วย Middleware
 - ✅ Auto-redirect หากไม่มีสิทธิ์เข้าถึง
+- ✅ OAuth Error Handling และแสดงข้อความเป็นภาษาไทย
 
 ### 👥 ระบบจัดการผู้ใช้ (User Management)
 - ✅ **CRUD Operations**
@@ -92,10 +98,49 @@
 - ✅ Real-time Data Refresh
 - ✅ Loading States & Error Handling
 
+### 📦 ระบบจัดการสินค้า (Product Management)
+- ✅ **CRUD Operations สำหรับสินค้า**
+  - เพิ่มสินค้าใหม่พร้อมรูปภาพ
+  - แสดงรายการสินค้าทั้งหมด
+  - แก้ไขข้อมูลสินค้า
+  - ลบสินค้าพร้อมรูปภาพใน Google Cloud Storage
+- ✅ **Upload รูปภาพสินค้าไป Google Cloud Storage**
+  - รองรับสูงสุด 3 รูปต่อสินค้า
+  - แสดง Preview รูปภาพก่อน Upload
+  - ลบรูปภาพเดิมได้
+- ✅ **Product Fields**
+  - ชื่อสินค้า, ราคา, หมวดหมู่
+  - รายละเอียดสินค้า, จำนวนคงเหลือ
+  - รูปภาพสินค้า (ไม่เกิน 3 รูป)
+- ✅ Admin Only Access
+- ✅ Image Management with Google Cloud Storage
+- ✅ Form Validation & Error Handling
+
+### 🛍️ หน้าแสดงสินค้าสำหรับลูกค้า
+- ✅ **หน้ารายการสินค้า (Products Listing)**
+  - แสดงสินค้าทั้งหมดในรูปแบบ Grid
+  - กรองตามหมวดหมู่ (Category Filter)
+  - แสดงรูปภาพ, ชื่อ, ราคา, จำนวนคงเหลือ
+  - Badge สถานะสินค้า (หมด, เหลือน้อย, พร้อมจำหน่าย)
+  - Hover Effects สวยงาม
+  - Responsive Design
+- ✅ **หน้ารายละเอียดสินค้า (Product Detail)**
+  - Image Slideshow สำหรับรูปภาพสินค้า (สูงสุด 3 รูป)
+  - ปุ่มลูกศรซ้าย-ขวาเปลี่ยนภาพ
+  - Thumbnail Navigation
+  - ตัวนับภาพ (1/3)
+  - แสดงรายละเอียดครบถ้วน
+  - ปุ่มเพิ่มลงตะกร้า (disabled เมื่อสินค้าหมด)
+  - Breadcrumb Navigation
+  - ปุ่มกลับหน้ารายการสินค้า
+
 ### 📊 Admin Dashboard
 - ✅ หน้า Dashboard สำหรับ Admin เท่านั้น
 - ✅ แสดงสถิติ (Total Users, Products, Orders)
 - ✅ Quick Actions Menu
+  - จัดการผู้ใช้งาน
+  - **จัดการสินค้า**
+  - ตั้งค่าระบบ
 - ✅ ตารางกิจกรรมล่าสุด (Recent Activity)
 - ✅ Responsive Cards & Charts
 - ✅ Bootstrap Icons Integration
@@ -106,9 +151,11 @@
 - ✅ **Offcanvas Menu** - เมนูแบบเลื่อนออกบนมือถือ
 - ✅ **Active Link Highlighting** - แสดง Active State อัตโนมัติ
 - ✅ **Loading Spinners** - แสดง Loading State
-- ✅ **Toast Notifications** - แจ้งเตือนสำเร็จ/ผิดพลาด
+- ✅ **Toast Notifications** - แจ้งเตือนสำเร็จ/ผิดพลาด (SweetAlert2)
 - ✅ **Form Validation** - ตรวจสอบข้อมูลก่อน Submit
-- ✅ **Error Messages** - แสดงข้อความ Error ที่ชัดเจน
+- ✅ **Error Messages** - แสดงข้อความ Error ที่ชัดเจนเป็นภาษาไทย
+- ✅ **Image Slideshow** - แสดงรูปภาพแบบ Carousel
+- ✅ **Hover Effects** - Animation เมื่อเมาส์ชี้
 
 ### 🚀 Performance & SEO
 - ✅ Server-Side Rendering (SSR)
@@ -123,40 +170,49 @@
 ## 📁 โครงสร้างโปรเจค
 
 ```
-my-app/
+nextJS-theme/
 ├── src/
 │   ├── app/                          # App Router (Next.js 15)
 │   │   ├── api/                      # API Routes
 │   │   │   ├── auth/
 │   │   │   │   ├── [...nextauth]/
-│   │   │   │   │   └── route.ts     # NextAuth Configuration
+│   │   │   │   │   └── route.ts     # NextAuth Configuration (Credentials + Google)
 │   │   │   │   └── signup/
 │   │   │   │       └── route.ts     # Sign Up API
+│   │   │   ├── products/
+│   │   │   │   ├── route.ts         # GET all products, POST new product
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts     # GET, PUT, DELETE product by ID
+│   │   │   ├── upload/
+│   │   │   │   └── route.ts         # Upload images to Google Cloud Storage
 │   │   │   └── users/
 │   │   │       ├── route.ts         # GET all users, POST new user
 │   │   │       └── [id]/
 │   │   │           └── route.ts     # GET, PUT, DELETE user by ID
 │   │   │
-│   │   ├── dashboard/               # Admin Dashboard
-│   │   │   ├── page.tsx            # Dashboard Home (Protected)
+│   │   ├── dashboard/               # Admin Dashboard (Protected)
+│   │   │   ├── page.tsx            # Dashboard Home
+│   │   │   ├── products/
+│   │   │   │   └── page.tsx        # Product Management Page
 │   │   │   └── users/
 │   │   │       └── page.tsx        # User Management Page
 │   │   │
 │   │   ├── login/
-│   │   │   └── page.tsx            # Login Page
+│   │   │   └── page.tsx            # Login Page (Credentials + Google OAuth)
 │   │   │
 │   │   ├── signup/
-│   │   │   └── page.tsx            # Sign Up Page
+│   │   │   └── page.tsx            # Sign Up Page (Credentials + Google OAuth)
+│   │   │
+│   │   ├── products/
+│   │   │   ├── page.tsx            # Products Listing Page
+│   │   │   └── [id]/
+│   │   │       └── page.tsx        # Product Detail Page with Slideshow
 │   │   │
 │   │   ├── about/
 │   │   │   └── page.tsx            # About Page
 │   │   │
 │   │   ├── contact/
 │   │   │   └── page.tsx            # Contact Page
-│   │   │
-│   │   ├── create/
-│   │   │   └── product/
-│   │   │       └── page.tsx        # Product Creation Page
 │   │   │
 │   │   ├── layout.tsx              # Root Layout (Navbar + Footer)
 │   │   ├── page.tsx                # Home Page
@@ -168,10 +224,13 @@ my-app/
 │   │   └── SessionProvider.tsx     # NextAuth Session Provider
 │   │
 │   ├── lib/                        # Library & Utilities
-│   │   └── mongodb.ts              # MongoDB Connection (with caching)
+│   │   ├── auth.ts                 # Auth Helper Functions
+│   │   ├── mongodb.ts              # MongoDB Connection (with caching)
+│   │   └── gcs.ts                  # Google Cloud Storage Utilities
 │   │
 │   ├── models/                     # Mongoose Models
-│   │   └── User.ts                 # User Model (Schema + Methods)
+│   │   ├── User.ts                 # User Model (Schema + Methods)
+│   │   └── Product.ts              # Product Model (Schema + Validation)
 │   │
 │   ├── types/                      # TypeScript Type Definitions
 │   │   └── next-auth.d.ts         # NextAuth Type Extensions
@@ -197,13 +256,14 @@ my-app/
 - Node.js 20.x หรือสูงกว่า
 - npm, yarn, หรือ pnpm
 - MongoDB Atlas Account หรือ Local MongoDB Server
+- Google Cloud Platform Account (สำหรับ Google Cloud Storage)
 
 ### ขั้นตอนการติดตั้ง
 
 #### 1. Clone Repository
 ```bash
 git clone <your-repository-url>
-cd my-app
+cd nextJS-theme
 ```
 
 #### 2. ติดตั้ง Dependencies
@@ -225,6 +285,16 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWr
 # NextAuth Configuration
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your_generated_secret_key
+
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Google Cloud Storage Configuration
+GCS_PROJECT_ID=your_project_id
+GCS_BUCKET_NAME=your_bucket_name
+GCS_CLIENT_EMAIL=your_service_account_email
+GCS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 ```
 
 **วิธีสร้าง NEXTAUTH_SECRET:**
@@ -257,26 +327,47 @@ npm run start
 
 ```env
 # MongoDB Connection String
-# ดึงได้จาก MongoDB Atlas Dashboard → Connect → Connect your application
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
 
 # NextAuth Configuration
-# URL ของแอปพลิเคชัน (สำหรับ Development)
 NEXTAUTH_URL=http://localhost:3000
-
-# Secret Key สำหรับ JWT Signing (สร้างด้วย openssl rand -base64 32)
 NEXTAUTH_SECRET=your_secret_key_here
+
+# Google OAuth Configuration (สำหรับ Google Login/Signup)
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Google Cloud Storage Configuration
+GCS_PROJECT_ID=your-project-id
+GCS_BUCKET_NAME=your-bucket-name
+GCS_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
+GCS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYourPrivateKeyHere\n-----END PRIVATE KEY-----\n"
 ```
 
-### การตั้งค่าสำหรับ Production (Vercel)
+### วิธีการตั้งค่า Google OAuth
 
-เมื่อ Deploy บน Vercel ให้เพิ่ม Environment Variables ใน Dashboard:
+1. ไปที่ [Google Cloud Console](https://console.cloud.google.com/)
+2. สร้างโปรเจกต์ใหม่หรือเลือกโปรเจกต์ที่มีอยู่
+3. เปิดใช้งาน Google+ API
+4. ไปที่ Credentials → Create Credentials → OAuth 2.0 Client ID
+5. เลือก Application Type: Web Application
+6. เพิ่ม Authorized redirect URIs:
+   - `http://localhost:3000/api/auth/callback/google` (Development)
+   - `https://your-domain.com/api/auth/callback/google` (Production)
+7. คัดลอก Client ID และ Client Secret
 
-1. ไปที่ Project Settings → Environment Variables
-2. เพิ่ม Variables ต่อไปนี้:
-   - `MONGODB_URI` → MongoDB connection string
-   - `NEXTAUTH_URL` → URL ของแอปพลิเคชัน (https://your-app.vercel.app)
-   - `NEXTAUTH_SECRET` → Secret key
+### วิธีการตั้งค่า Google Cloud Storage
+
+1. ไปที่ [Google Cloud Console](https://console.cloud.google.com/)
+2. สร้าง Storage Bucket
+3. สร้าง Service Account:
+   - IAM & Admin → Service Accounts → Create Service Account
+   - ให้สิทธิ์ Storage Admin
+4. สร้าง JSON Key และคัดลอกข้อมูล:
+   - `project_id` → `GCS_PROJECT_ID`
+   - `client_email` → `GCS_CLIENT_EMAIL`
+   - `private_key` → `GCS_PRIVATE_KEY`
+5. Bucket Name → `GCS_BUCKET_NAME`
 
 ---
 
@@ -322,35 +413,129 @@ Body:
 Response: JWT Token in Cookie
 ```
 
-#### 3. Logout (ออกจากระบบ)
+#### 3. Google OAuth Login
 ```
-POST /api/auth/signout
+GET /api/auth/signin/google
+
+Redirects to Google OAuth consent screen
 ```
 
-### User Management APIs (Protected)
+### Product Management APIs (Admin Only)
+
+#### 1. Get All Products
+```
+GET /api/products
+
+Response:
+{
+  "products": [
+    {
+      "_id": "...",
+      "name": "Product Name",
+      "price": 1000,
+      "category": "Electronics",
+      "description": "Product description",
+      "quantity": 50,
+      "images": ["https://storage.googleapis.com/..."],
+      "createdAt": "2025-10-06T...",
+      "updatedAt": "2025-10-06T..."
+    }
+  ]
+}
+```
+
+#### 2. Create Product
+```
+POST /api/products
+Content-Type: application/json
+Authorization: Required (Admin)
+
+Body:
+{
+  "name": "New Product",
+  "price": 1500,
+  "category": "Electronics",
+  "description": "Product description",
+  "quantity": 100,
+  "images": ["https://storage.googleapis.com/..."]
+}
+
+Response:
+{
+  "product": { ... }
+}
+```
+
+#### 3. Update Product
+```
+PUT /api/products/[id]
+Content-Type: application/json
+Authorization: Required (Admin)
+
+Body:
+{
+  "name": "Updated Product",
+  "price": 2000,
+  "category": "Electronics",
+  "description": "Updated description",
+  "quantity": 75,
+  "images": ["https://storage.googleapis.com/..."]
+}
+
+Response:
+{
+  "product": { ... }
+}
+```
+
+#### 4. Delete Product
+```
+DELETE /api/products/[id]
+Authorization: Required (Admin)
+
+Response:
+{
+  "message": "Product deleted successfully"
+}
+```
+
+### File Upload API
+
+#### Upload Images to Google Cloud Storage
+```
+POST /api/upload
+Content-Type: multipart/form-data
+Authorization: Required (Admin)
+
+Body (FormData):
+files: [File, File, File] // สูงสุด 3 ไฟล์
+
+Response:
+{
+  "urls": [
+    "https://storage.googleapis.com/bucket/products/1234_image1.jpg",
+    "https://storage.googleapis.com/bucket/products/1234_image2.jpg"
+  ]
+}
+```
+
+### User Management APIs (Admin Only)
 
 #### 1. Get All Users
 ```
 GET /api/users
+Authorization: Required (Admin)
 
 Response:
 {
-  "users": [
-    {
-      "_id": "...",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "user",
-      "createdAt": "2025-10-05T..."
-    }
-  ]
+  "users": [ ... ]
 }
 ```
 
 #### 2. Create User
 ```
 POST /api/users
-Content-Type: application/json
+Authorization: Required (Admin)
 
 Body:
 {
@@ -359,42 +544,24 @@ Body:
   "password": "password123",
   "role": "staff"
 }
-
-Response:
-{
-  "message": "User created successfully",
-  "user": { ... }
-}
 ```
 
 #### 3. Update User
 ```
 PUT /api/users/[id]
-Content-Type: application/json
+Authorization: Required (Admin)
 
 Body:
 {
   "name": "Updated Name",
-  "email": "updated@example.com",
-  "role": "admin",
-  "password": "newpassword" // Optional
-}
-
-Response:
-{
-  "message": "User updated successfully",
-  "user": { ... }
+  "role": "admin"
 }
 ```
 
 #### 4. Delete User
 ```
 DELETE /api/users/[id]
-
-Response:
-{
-  "message": "User deleted successfully"
-}
+Authorization: Required (Admin)
 ```
 
 ---
@@ -407,13 +574,16 @@ Response:
 
 **Features:**
 - ✅ Credentials Provider (Email + Password)
+- ✅ Google OAuth Provider
 - ✅ JWT Strategy for Session Management
 - ✅ Custom Callbacks for Token & Session
-- ✅ Custom Sign In Page
+- ✅ Custom Sign In/Sign Up Pages
 - ✅ Password Hashing with bcryptjs
+- ✅ OAuth Error Handling
 
 ### Authentication Flow
 
+#### Credentials Login
 ```
 1. User กรอก Email & Password
    ↓
@@ -428,43 +598,32 @@ Response:
 6. Return Session Object to Client
 ```
 
+#### Google OAuth Login
+```
+1. User คลิก "เข้าสู่ระบบด้วย Google"
+   ↓
+2. Redirect ไป Google OAuth Consent Screen
+   ↓
+3. User อนุญาตสิทธิ์
+   ↓
+4. Google redirect กลับพร้อม Authorization Code
+   ↓
+5. NextAuth แลก Code เป็น Access Token
+   ↓
+6. ดึงข้อมูล Profile จาก Google
+   ↓
+7. สร้างหรืออัพเดต User ใน Database
+   ↓
+8. สร้าง Session และ JWT Token
+```
+
 ### ไฟล์ที่เกี่ยวข้อง
 
 - **`src/app/api/auth/[...nextauth]/route.ts`** - NextAuth Configuration
 - **`src/app/login/page.tsx`** - Login Page
 - **`src/app/signup/page.tsx`** - Sign Up Page
+- **`src/lib/auth.ts`** - Auth Helper Functions
 - **`src/components/SessionProvider.tsx`** - Session Provider Wrapper
-
-### การใช้งาน Session
-
-```tsx
-// Client Component
-'use client';
-import { useSession } from 'next-auth/react';
-
-export default function MyComponent() {
-  const { data: session, status } = useSession();
-
-  if (status === 'loading') return <div>Loading...</div>;
-  if (!session) return <div>Please login</div>;
-
-  return <div>Welcome, {session.user.name}!</div>;
-}
-```
-
-```tsx
-// Server Component
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-
-export default async function MyPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) redirect('/login');
-
-  return <div>Welcome, {session.user.name}!</div>;
-}
-```
 
 ---
 
@@ -473,43 +632,18 @@ export default async function MyPage() {
 ### Role-Based Access Control
 
 โปรเจคมี 3 Roles:
-- **Admin** - เข้าถึงได้ทุก Feature (Dashboard, User Management)
+- **Admin** - เข้าถึงได้ทุก Feature (Dashboard, User Management, Product Management)
 - **Staff** - เข้าถึง Feature บางอย่าง (ขึ้นอยู่กับการกำหนดสิทธิ์)
 - **User** - เข้าถึง Feature พื้นฐาน
 
-### Middleware Protection
-
-ไฟล์ `src/middleware.ts` จะตรวจสอบ Authentication & Authorization:
-
-```typescript
-// Protect Dashboard Routes
-export const config = {
-  matcher: ['/dashboard/:path*'],
-};
-
-// Middleware Logic
-1. ตรวจสอบว่ามี Session หรือไม่
-2. ตรวจสอบว่า Role เป็น 'admin' หรือไม่
-3. ถ้าไม่ผ่าน → Redirect ไปหน้า Login หรือ Home
-```
-
-### Protected Pages
+### Protected Routes
 
 - **`/dashboard`** - Admin only
 - **`/dashboard/users`** - Admin only
-- **`/api/users`** - Authenticated users only
-
-### การเพิ่ม Protected Route
-
-```typescript
-// ใน middleware.ts
-export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/admin/:path*',  // เพิ่ม route ใหม่
-  ],
-};
-```
+- **`/dashboard/products`** - Admin only
+- **`/api/products`** (POST, PUT, DELETE) - Admin only
+- **`/api/upload`** - Admin only
+- **`/api/users`** - Admin only
 
 ---
 
@@ -526,33 +660,63 @@ export const config = {
   password: String (required, min 6 characters, hashed)
   name: String (required)
   role: Enum['admin', 'staff', 'user'] (default: 'user')
+  provider: String (optional - 'google' for OAuth users)
+  providerId: String (optional - Google User ID)
   createdAt: Date (default: now)
 }
 ```
 
-**Methods:**
-- `comparePassword(candidatePassword)` - เทียบ Password กับ Hash
+### Product Model
 
-**Hooks:**
-- `pre('save')` - Hash Password ก่อนบันทึก (ถ้า Password เปลี่ยน)
+**ไฟล์:** `src/models/Product.ts`
 
-### MongoDB Connection
+**Schema:**
+```typescript
+{
+  name: String (required)
+  price: Number (required, min: 0)
+  category: String (required)
+  description: String (required)
+  quantity: Number (required, min: 0, default: 0)
+  images: [String] (max 3 images, URLs from Google Cloud Storage)
+  createdAt: Date (auto-generated)
+  updatedAt: Date (auto-generated)
+}
+```
 
-**ไฟล์:** `src/lib/mongodb.ts`
+---
 
-**Features:**
-- ✅ Connection Caching (ไม่เปิด Connection ซ้ำ)
-- ✅ Error Handling
-- ✅ Environment Variable Validation
-- ✅ Global Type Declaration
+## ☁️ Google Cloud Storage
+
+### Configuration
+
+โปรเจคใช้ Google Cloud Storage สำหรับเก็บรูปภาพสินค้า
+
+**ไฟล์:** `src/lib/gcs.ts`
+
+**Functions:**
+- `uploadToGCS(file, fileName, folder)` - อัพโหลดไฟล์
+- `deleteFromGCS(fileUrl)` - ลบไฟล์
+- `deleteMultipleFromGCS(fileUrls)` - ลบหลายไฟล์พร้อมกัน
+
+### การใช้งาน
 
 ```typescript
-// การใช้งาน
-import connectDB from '@/lib/mongodb';
+import { uploadToGCS } from '@/lib/gcs';
 
-await connectDB();
-// ใช้ Mongoose Models ได้เลย
+// Upload image
+const buffer = Buffer.from(await file.arrayBuffer());
+const url = await uploadToGCS(buffer, 'product-image.jpg', 'products');
+
+// url = https://storage.googleapis.com/bucket-name/products/1234567890_product-image.jpg
 ```
+
+### Features
+- ✅ Auto-generate unique filenames (timestamp-based)
+- ✅ Public URL generation
+- ✅ Automatic file cleanup on product deletion
+- ✅ Support for multiple file formats
+- ✅ Error handling
 
 ---
 
@@ -576,7 +740,7 @@ export default function ServicesPage() {
 }
 ```
 
-4. เพิ่มลิงก์ใน Navbar (ถ้าต้องการ)
+4. เพิ่มลิงก์ใน Navbar
 
 ```tsx
 // src/components/Navbar.tsx
@@ -593,82 +757,19 @@ export default function ServicesPage() {
 
 ### เพิ่ม API Route
 
-1. สร้างไฟล์ `route.ts` ใน `src/app/api/`
-2. Export HTTP Methods: GET, POST, PUT, DELETE
-
 ```typescript
-// src/app/api/products/route.ts
+// src/app/api/orders/route.ts
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  // Logic here
-  return NextResponse.json({ products: [] });
+  return NextResponse.json({ orders: [] });
 }
 
 export async function POST(req: Request) {
   const body = await req.json();
-  // Logic here
   return NextResponse.json({ message: 'Created' });
 }
 ```
-
-### เพิ่ม Mongoose Model
-
-1. สร้างไฟล์ใน `src/models/` เช่น `Product.ts`
-2. กำหนด Schema และ Export Model
-
-```typescript
-// src/models/Product.ts
-import mongoose, { Schema } from 'mongoose';
-
-const productSchema = new Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  description: String,
-  createdAt: { type: Date, default: Date.now },
-});
-
-export default mongoose.models.Product ||
-  mongoose.model('Product', productSchema);
-```
-
-### เพิ่ม Component
-
-1. สร้างไฟล์ใน `src/components/`
-2. Export Default Component
-
-```tsx
-// src/components/Card.tsx
-interface CardProps {
-  title: string;
-  content: string;
-}
-
-export default function Card({ title, content }: CardProps) {
-  return (
-    <div className="card">
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{content}</p>
-      </div>
-    </div>
-  );
-}
-```
-
-### แก้ไข Styling
-
-**Global Styles:** `src/app/globals.css`
-
-```css
-/* Custom styles */
-.my-custom-class {
-  background-color: #f0f0f0;
-  padding: 20px;
-}
-```
-
-**Component Styles:** ใช้ Bootstrap Classes หรือ Inline Styles
 
 ---
 
@@ -698,11 +799,12 @@ git push origin main
 MONGODB_URI=mongodb+srv://...
 NEXTAUTH_URL=https://your-app.vercel.app
 NEXTAUTH_SECRET=<generated-secret>
-```
-
-**สร้าง NEXTAUTH_SECRET:**
-```bash
-openssl rand -base64 32
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+GCS_PROJECT_ID=<your-project-id>
+GCS_BUCKET_NAME=<your-bucket-name>
+GCS_CLIENT_EMAIL=<your-service-account-email>
+GCS_PRIVATE_KEY=<your-private-key>
 ```
 
 #### 4. Deploy
@@ -711,179 +813,62 @@ openssl rand -base64 32
 2. รอให้ Vercel Build & Deploy เสร็จ (2-3 นาที)
 3. เข้าถึงเว็บไซต์ผ่าน URL ที่ Vercel สร้างให้
 
-**URL Format:** `https://your-project-name.vercel.app`
-
-### Auto Deployment
-
-Vercel จะ Deploy อัตโนมัติทุกครั้งที่คุณ Push ขึ้น Branch `main`
-
-**Preview Deployments:**
-- ทุก Pull Request จะได้ Preview URL แยก
-- ทดสอบได้ก่อน Merge เข้า main
-
-### Custom Domain
-
-1. ไปที่ Project Settings → Domains
-2. เพิ่ม Custom Domain ของคุณ
-3. ตั้งค่า DNS Records ตามที่ Vercel แนะนำ
-4. รอ DNS Propagation (15-48 ชั่วโมง)
-
 ---
 
 ## 📚 คำแนะนำการใช้งาน
 
 ### สำหรับผู้ใช้งานทั่วไป
 
-1. **สมัครสมาชิก**
-   - ไปที่หน้า Sign Up (`/signup`)
-   - กรอก Name, Email, Password
-   - คลิก "Sign Up"
+1. **ลงทะเบียน**
+   - เลือกลงทะเบียนด้วย Email หรือ Google Account
+   - กรอกข้อมูลที่จำเป็น
 
-2. **เข้าสู่ระบบ**
-   - ไปที่หน้า Login (`/login`)
-   - กรอก Email & Password
-   - คลิก "Login"
+2. **ดูรายการสินค้า**
+   - คลิกเมนู "สินค้า"
+   - เลือกหมวดหมู่ที่สนใจ
+   - คลิกที่สินค้าเพื่อดูรายละเอียด
 
-3. **ออกจากระบบ**
-   - คลิกปุ่ม "Logout" บน Navbar
+3. **ดูรายละเอียดสินค้า**
+   - ดูรูปภาพแบบ Slideshow
+   - อ่านรายละเอียดและราคา
+   - เช็คสต็อกสินค้า
 
 ### สำหรับ Admin
 
 1. **เข้าสู่ระบบด้วย Admin Account**
-   - Email & Password ของ Admin
-   - จะเห็นเมนู "Dashboard" บน Navbar
 
-2. **จัดการผู้ใช้**
+2. **จัดการสินค้า**
+   - ไปที่ Dashboard → จัดการสินค้า
+   - เพิ่มสินค้าใหม่พร้อมรูปภาพ (สูงสุด 3 รูป)
+   - แก้ไขข้อมูลสินค้า
+   - ลบสินค้า (รูปภาพจะถูกลบจาก Google Cloud Storage อัตโนมัติ)
+
+3. **จัดการผู้ใช้**
    - ไปที่ Dashboard → จัดการผู้ใช้งาน
-   - เพิ่ม/แก้ไข/ลบผู้ใช้ได้
-
-3. **เปลี่ยน Role**
-   - คลิก "แก้ไข" ที่ผู้ใช้
-   - เลือก Role ใหม่ (Admin/Staff/User)
-   - คลิก "บันทึก"
-
-### การสร้าง Admin Account แรก
-
-**Option 1: ผ่าน MongoDB Compass/Atlas**
-1. เชื่อมต่อกับ MongoDB
-2. เปิด Collection `users`
-3. แก้ไข Document ของ User ที่ต้องการ
-4. เปลี่ยน `role: "user"` เป็น `role: "admin"`
-5. Save
-
-**Option 2: ผ่าน API + Postman/Thunder Client**
-```bash
-POST /api/auth/signup
-{
-  "name": "Admin User",
-  "email": "admin@example.com",
-  "password": "admin123"
-}
-
-# จากนั้นไปแก้ role ใน Database เป็น "admin"
-```
+   - เพิ่ม/แก้ไข/ลบผู้ใช้
+   - เปลี่ยน Role ของผู้ใช้
 
 ---
 
 ## 🐛 Troubleshooting
 
-### ปัญหา: Cannot connect to MongoDB
+### Google Cloud Storage Errors
+
+**ปัญหา:** Cannot upload images
 
 **Solution:**
-1. ตรวจสอบ `MONGODB_URI` ใน `.env.local`
-2. ตรวจสอบ Network Access ใน MongoDB Atlas
-3. เพิ่ม IP Address ของคุณใน Whitelist
-4. ตรวจสอบ Username/Password
+1. ตรวจสอบ Service Account Credentials
+2. ตรวจสอบ Bucket permissions
+3. ตรวจสอบ `GCS_PRIVATE_KEY` format (ต้องมี `\n`)
 
-### ปัญหา: NextAuth Error - No secret provided
+### Google OAuth Errors
 
-**Solution:**
-```bash
-# สร้าง Secret ใหม่
-openssl rand -base64 32
-
-# เพิ่มใน .env.local
-NEXTAUTH_SECRET=<generated-secret>
-```
-
-### ปัญหา: Session ไม่ทำงาน
+**ปัญหา:** OAuth signin error
 
 **Solution:**
-1. ตรวจสอบว่า `NEXTAUTH_URL` ถูกต้อง
-2. ลอง Clear Cookies ในเบราว์เซอร์
-3. Restart Development Server
-
-### ปัญหา: Bootstrap CSS ไม่โหลด
-
-**Solution:**
-1. ตรวจสอบ `layout.tsx` ว่ามี Bootstrap CDN
-2. ตรวจสอบ Internet Connection
-3. ลอง Hard Refresh (Ctrl+Shift+R)
-
-### ปัญหา: TypeScript Errors
-
-**Solution:**
-```bash
-# ลบ Cache และ Install ใหม่
-rm -rf .next node_modules
-npm install
-npm run dev
-```
-
-### ปัญหา: Port 3000 already in use
-
-**Solution:**
-```bash
-# Kill Process บน Port 3000
-lsof -ti:3000 | xargs kill -9
-
-# หรือใช้ Port อื่น
-npm run dev -- -p 3001
-```
-
----
-
-## 📖 เอกสารเพิ่มเติม
-
-### Official Documentation
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API
-- [React Documentation](https://react.dev) - React concepts and patterns
-- [NextAuth.js Guide](https://next-auth.js.org/getting-started/introduction) - Authentication setup
-- [MongoDB Documentation](https://www.mongodb.com/docs/) - MongoDB guides
-- [Mongoose Guide](https://mongoosejs.com/docs/guide.html) - Mongoose ODM
-- [Bootstrap 5 Docs](https://getbootstrap.com/docs/5.3/getting-started/introduction/) - Bootstrap components
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - TypeScript language
-
-### Tutorials & Resources
-- [Next.js Learn Course](https://nextjs.org/learn) - Interactive Next.js tutorial
-- [MongoDB University](https://university.mongodb.com/) - Free MongoDB courses
-- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/) - TypeScript with React
-
-### Community
-- [Next.js Discord](https://discord.gg/nextjs)
-- [React Community](https://react.dev/community)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/next.js)
-
----
-
-## 🎓 โครงสร้างการเรียนการสอน
-
-โปรเจคนี้เหมาะสำหรับใช้ในการเรียนการสอนวิชา:
-- **Web Application Development**
-- **Full-Stack Development**
-- **Database Management Systems**
-- **Authentication & Security**
-- **Modern JavaScript Frameworks**
-
-### เนื้อหาที่ครอบคลุม
-1. Frontend Development (React + Next.js)
-2. Backend Development (API Routes)
-3. Database Integration (MongoDB + Mongoose)
-4. Authentication & Authorization (NextAuth.js)
-5. UI/UX Design (Bootstrap + Responsive Design)
-6. TypeScript Type Safety
-7. Git Version Control
-8. Cloud Deployment (Vercel)
+1. ตรวจสอบ Authorized redirect URIs ใน Google Console
+2. ตรวจสอบ `GOOGLE_CLIENT_ID` และ `GOOGLE_CLIENT_SECRET`
+3. ตรวจสอบ `NEXTAUTH_URL` ให้ตรงกับ domain จริง
 
 ---
 
@@ -903,77 +888,24 @@ npm run dev -- -p 3001
 
 This project is open source and available under the [MIT License](LICENSE).
 
-```
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software.
-```
-
----
-
-## 🙏 Acknowledgments
-
-- Next.js Team สำหรับ Framework ที่ยอดเยี่ยม
-- Vercel สำหรับ Hosting Platform ฟรี
-- MongoDB สำหรับ Database Solution
-- Bootstrap Team สำหรับ UI Framework
-- NextAuth.js Team สำหรับ Authentication Library
-- Open Source Community ทุกท่าน
-
 ---
 
 ## 📝 Changelog
 
-### Version 0.1.0 (Current)
-- ✅ Initial Release
-- ✅ NextAuth Authentication System
+### Version 1.0.0 (Current)
+- ✅ NextAuth Authentication System (Credentials + Google OAuth)
 - ✅ User Management CRUD
+- ✅ **Product Management System with Image Upload**
+- ✅ **Google Cloud Storage Integration**
+- ✅ **Products Listing Page with Category Filter**
+- ✅ **Product Detail Page with Image Slideshow**
 - ✅ Admin Dashboard
 - ✅ Role-Based Access Control
 - ✅ Responsive UI with Bootstrap 5
 - ✅ MongoDB Integration
 - ✅ SweetAlert2 Notifications
-
-### Planned Features (Roadmap)
-- 🔲 Product Management System
-- 🔲 Order Management System
-- 🔲 Email Verification
-- 🔲 Password Reset Feature
-- 🔲 User Profile Management
-- 🔲 Image Upload (Cloudinary)
-- 🔲 Dark Mode Toggle
-- 🔲 Multi-language Support (i18n)
-- 🔲 Analytics Dashboard
-- 🔲 Export Data (CSV/Excel)
-
----
-
-## 💡 Tips & Best Practices
-
-### Security
-- ✅ ใช้ Environment Variables สำหรับ Secrets
-- ✅ Hash Passwords ก่อนเก็บ Database
-- ✅ Validate Input ทุกครั้ง
-- ✅ ใช้ HTTPS ใน Production
-- ✅ ตั้งค่า CORS อย่างถูกต้อง
-
-### Performance
-- ✅ ใช้ Server Components เมื่อเป็นไปได้
-- ✅ Lazy Load Components
-- ✅ Optimize Images
-- ✅ Cache Database Connections
-- ✅ Minimize Bundle Size
-
-### Code Quality
-- ✅ ใช้ TypeScript สำหรับ Type Safety
-- ✅ เขียน Clean Code
-- ✅ Comment Code ที่ซับซ้อน
-- ✅ ใช้ ESLint และ Prettier
-- ✅ เขียน Meaningful Commit Messages
+- ✅ Google OAuth Login/Signup
+- ✅ Thai Language Support
 
 ---
 
