@@ -77,11 +77,12 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link ${isActive("/create/product")}`}
-                href="/create/product"
+                className={`nav-link ${isActive("/products")}`}
+                href="/products"
                 onClick={closeOffcanvas}
               >
-                Product
+                {/* <i className="bi bi-bag me-1"></i> */}
+                products
               </Link>
             </li>
             <li className="nav-item">
