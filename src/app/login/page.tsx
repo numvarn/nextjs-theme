@@ -96,7 +96,7 @@ function LoginForm() {
         <div className="col-md-6 col-lg-5">
           <div className="card shadow">
             <div className="card-body p-4">
-              <h2 className="card-title text-center mb-4">Login</h2>
+              <h2 className="card-title text-center mb-4">Sign In</h2>
 
               {error && (
                 <div className="alert alert-danger" role="alert">
@@ -104,68 +104,16 @@ function LoginForm() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100"
-                  disabled={loading}
-                >
-                  {loading ? 'Logging in...' : 'Login'}
-                </button>
-              </form>
-
-              <div className="position-relative my-4">
-                <hr />
-                <span
-                  className="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted"
-                  style={{ fontSize: '0.875rem' }}
-                >
-                  OR
-                </span>
-              </div>
-
               <button
                 type="button"
-                className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
+                className="btn btn-lg btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-3 mb-5"
                 onClick={handleGoogleLogin}
                 disabled={loading || googleLoading}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
+                  width="26"
+                  height="26"
                   viewBox="0 0 48 48"
                 >
                   <path
@@ -187,6 +135,62 @@ function LoginForm() {
                 </svg>
                 {googleLoading ? 'กำลังเข้าสู่ระบบด้วย Google...' : 'เข้าสู่ระบบด้วย Google'}
               </button>
+
+              <div className="position-relative my-5">
+                <hr />
+                <span
+                  className="position-absolute top-50 start-50 translate-middle bg-white px-4 text-muted"
+                  style={{ fontSize: '0.875rem' }}
+                >
+                  OR
+                </span>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control form-control-lg"
+                    id="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control form-control-lg"
+                    id="password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100 btn-lg"
+                  disabled={loading}
+                >
+                  {loading ? 'Logging in...' : 'Login'}
+                </button>
+              </form>
+
+              
+
+              
 
               <div className="text-center mt-3">
                 <p className="mb-0">
