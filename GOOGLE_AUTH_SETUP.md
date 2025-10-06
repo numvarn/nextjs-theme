@@ -43,16 +43,18 @@
 4. 📝 ตั้งชื่อ Application (เช่น "My Next.js App")
 
 #### **🔗 Authorized JavaScript Origins**
+
 ```
 http://localhost:3000
-http://localhost:3001
+http://localhost:3000
 https://your-production-domain.com (ถ้ามี)
 ```
 
 #### **↩️ Authorized Redirect URIs**
+
 ```
 http://localhost:3000/api/auth/callback/google
-http://localhost:3001/api/auth/callback/google
+http://localhost:3000/api/auth/callback/google
 https://your-production-domain.com/api/auth/callback/google
 ```
 
@@ -69,10 +71,10 @@ https://your-production-domain.com/api/auth/callback/google
 
 หลังจากสร้าง OAuth client ID สำเร็จ คุณจะได้รับ:
 
-| Field | Description | Usage |
-|-------|-------------|-------|
-| 🆔 **Client ID** | รหัส ID สาธารณะ | ใช้สำหรับ `GOOGLE_CLIENT_ID` |
-| 🔐 **Client Secret** | รหัสลับ | ใช้สำหรับ `GOOGLE_CLIENT_SECRET` |
+| Field                | Description     | Usage                            |
+| -------------------- | --------------- | -------------------------------- |
+| 🆔 **Client ID**     | รหัส ID สาธารณะ | ใช้สำหรับ `GOOGLE_CLIENT_ID`     |
+| 🔐 **Client Secret** | รหัสลับ         | ใช้สำหรับ `GOOGLE_CLIENT_SECRET` |
 
 > 🔒 **ข้อควรระวัง**: Client Secret เป็นข้อมูลลับ ห้ามเปิดเผยสาธารณะ
 
@@ -89,11 +91,11 @@ https://your-production-domain.com/api/auth/callback/google
 
 ```bash
 # 🗄️ Database Configuration
-MONGODB_URI=mongodb+srv://web:numvarnSc28152456@cluster0.1nhwnyf.mongodb.net/todolist?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=mongodb+srv://<user>:<password>@<dburl>/todolist?retryWrites=true&w=majority&appName=Cluster0
 
 # 🔐 NextAuth Configuration
 NEXTAUTH_SECRET=5SDubzIncg4Ci4YvBbooUFp+tM+MCwV7/Lh5jBl40FM=
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 
 # 🌐 Google OAuth Configuration
 GOOGLE_CLIENT_ID=your_actual_google_client_id_here
@@ -114,6 +116,7 @@ GOOGLE_CLIENT_SECRET=your_actual_google_client_secret_here
 ✅ **NextAuth Secret ได้ถูกสร้างแล้ว**
 
 หากต้องการสร้างใหม่:
+
 ```bash
 openssl rand -base64 32
 ```
@@ -134,7 +137,7 @@ npm run dev
 
 ### **🎯 Step 2: ทดสอบการกำหนดค่า**
 
-1. 🌐 เปิด [`http://localhost:3001/auth/test`](http://localhost:3001/auth/test)
+1. 🌐 เปิด [`http://localhost:3000/auth/test`](http://localhost:3000/auth/test)
 2. 📊 ตรวจสอบสถานะ:
    - ✅ Google Client ID ถูกกำหนดค่า
    - ✅ Database เชื่อมต่อสำเร็จ
@@ -142,7 +145,7 @@ npm run dev
 
 ### **🔑 Step 3: ทดสอบ Google OAuth**
 
-1. 🌐 ไปที่ [`http://localhost:3001/login`](http://localhost:3001/login)
+1. 🌐 ไปที่ [`http://localhost:3000/login`](http://localhost:3000/login)
 2. 🖱️ คลิกปุ่ม **"เข้าสู่ระบบด้วย Google"**
 3. 👤 ทำการเข้าสู่ระบบด้วย Google Account
 4. ✅ ตรวจสอบว่าถูก redirect กลับมาที่หน้าแรก
@@ -151,11 +154,13 @@ npm run dev
 ### **🗄️ Step 4: ตรวจสอบฐานข้อมูล**
 
 รันคำสั่งทดสอบฐานข้อมูล:
+
 ```bash
 node scripts/test-db.js
 ```
 
 ตรวจสอบข้อมูลผู้ใช้ในฐานข้อมูล MongoDB:
+
 - ✅ `email`: อีเมลจาก Google
 - ✅ `name`: ชื่อจาก Google
 - ✅ `provider`: "google"
@@ -174,6 +179,7 @@ node scripts/test-db.js
 **สาเหตุ**: ไม่ได้ตั้งค่า Google credentials
 
 **วิธีแก้**:
+
 - ✅ ตรวจสอบว่า `GOOGLE_CLIENT_ID` และ `GOOGLE_CLIENT_SECRET` ถูกตั้งค่าแล้ว
 - ✅ ตรวจสอบว่า OAuth client ID ใน Google Cloud Console ถูกตั้งค่า redirect URIs ถูกต้อง
 
@@ -185,6 +191,7 @@ node scripts/test-db.js
 **สาเหตุ**: ปัญหาในการเข้าสู่ระบบ Google
 
 **วิธีแก้**:
+
 - ✅ ตรวจสอบ redirect URI ใน Google Cloud Console
 - ✅ ตรวจสอบว่า Google Identity API เปิดใช้งานแล้ว
 - ✅ ลองใช้ Incognito/Private browsing mode
@@ -197,6 +204,7 @@ node scripts/test-db.js
 **สาเหตุ**: ปัญหาในการรับ callback จาก Google
 
 **วิธีแก้**:
+
 - ✅ ตรวจสอบ `NEXTAUTH_URL` ใน .env.local
 - ✅ ตรวจสอบ `NEXTAUTH_SECRET`
 - ✅ ตรวจสอบว่า redirect URI ตรงกัน
@@ -209,6 +217,7 @@ node scripts/test-db.js
 **สาเหตุ**: ปัญหาการเชื่อมต่อฐานข้อมูล
 
 **วิธีแก้**:
+
 - ✅ ตรวจสอบการเชื่อมต่อ MongoDB
 - ✅ รันคำสั่ง `node scripts/test-db.js`
 - ✅ ตรวจสอบ User model schema
@@ -225,16 +234,16 @@ node scripts/test-db.js
 
 ## ✨ คุณสมบัติที่ใช้งานได้
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| 🔑 **Google Login** | ✅ | เข้าสู่ระบบด้วย Google Account |
-| 👤 **Auto User Creation** | ✅ | สร้าง account อัตโนมัติสำหรับผู้ใช้ใหม่ |
-| 🔗 **Account Linking** | ✅ | เชื่อมโยงกับ account ที่มีอยู่แล้ว |
-| 🎫 **JWT Tokens** | ✅ | จัดการ session และ JWT tokens |
-| 👮 **Role-based Access** | ✅ | ระบบจัดการสิทธิ์ตาม role |
-| 🚪 **Logout** | ✅ | ออกจากระบบ |
-| ⚠️ **Error Handling** | ✅ | จัดการ error และแสดงข้อความผู้ใช้ |
-| 📱 **Responsive UI** | ✅ | หน้าจอที่ปรับตัวได้ |
+| Feature                   | Status | Description                             |
+| ------------------------- | ------ | --------------------------------------- |
+| 🔑 **Google Login**       | ✅     | เข้าสู่ระบบด้วย Google Account          |
+| 👤 **Auto User Creation** | ✅     | สร้าง account อัตโนมัติสำหรับผู้ใช้ใหม่ |
+| 🔗 **Account Linking**    | ✅     | เชื่อมโยงกับ account ที่มีอยู่แล้ว      |
+| 🎫 **JWT Tokens**         | ✅     | จัดการ session และ JWT tokens           |
+| 👮 **Role-based Access**  | ✅     | ระบบจัดการสิทธิ์ตาม role                |
+| 🚪 **Logout**             | ✅     | ออกจากระบบ                              |
+| ⚠️ **Error Handling**     | ✅     | จัดการ error และแสดงข้อความผู้ใช้       |
+| 📱 **Responsive UI**      | ✅     | หน้าจอที่ปรับตัวได้                     |
 
 ---
 
@@ -275,6 +284,7 @@ node scripts/test-db.js
 ## 💡 Tips & Best Practices
 
 > **🔥 Pro Tips**:
+>
 > - ใช้ environment variables แยกสำหรับ development และ production
 > - ตั้งค่า CORS policies ให้เหมาะสม
 > - ใช้ HTTPS ใน production เสมอ
